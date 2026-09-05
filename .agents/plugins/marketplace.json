@@ -1,0 +1,20 @@
+{
+  "name": "agentknock",
+  "interface": {
+    "displayName": "Agentknock"
+  },
+  "plugins": [
+    {
+      "name": "agentknock",
+      "source": {
+        "source": "local",
+        "path": "./plugins/agentknock"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

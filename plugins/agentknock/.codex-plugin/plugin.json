@@ -1,0 +1,22 @@
+{
+  "name": "agentknock",
+  "version": "0.1.0",
+  "description": "Placeholder for Agentknock CLI workflows.",
+  "author": {
+    "name": "Agentknock"
+  },
+  "homepage": "https://agentknock.dev/",
+  "repository": "https://github.com/agentknock/agentknock-plugin",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agentknock",
+    "shortDescription": "Agentknock CLI workflow scaffold",
+    "longDescription": "Placeholder plugin for Agentknock CLI workflows. Workflow instructions are not implemented yet.",
+    "developerName": "Agentknock",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Use Agentknock for this task."
+    ]
+  }
+}
