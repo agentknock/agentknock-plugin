@@ -1,11 +1,11 @@
 # Agentknock plugin
 
-Skill, plugin, and marketplace scaffolding for using the
+Skill, plugins, and marketplaces for using the
 [Agentknock CLI](https://github.com/agentknock/agentknock-cli) with Codex and
 Claude Code.
 
-This repository contains placeholders. Agentknock workflow instructions have
-not been implemented yet.
+The skill covers running commands with Agentknock. Installation and pairing
+instructions are separate references, loaded only when needed.
 
 Both plugins share `plugins/agentknock/skills/agentknock/SKILL.md`.
 Platform-specific manifests live alongside the shared skill:

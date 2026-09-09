@@ -1,6 +1,6 @@
 {
   "name": "agentknock",
-  "description": "Placeholder for Agentknock CLI workflows.",
+  "description": "Install and pair Agentknock, then run commands with phone-approved secrets.",
   "author": {
     "name": "Agentknock"
   },
@@ -9,8 +9,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Agentknock",
-    "shortDescription": "Agentknock CLI workflow scaffold",
-    "longDescription": "Placeholder plugin for Agentknock CLI workflows. Workflow instructions are not implemented yet.",
+    "shortDescription": "Run commands with phone-approved secrets",
+    "longDescription": "Use Agentknock to run commands with secrets, authenticate with SSH keys, and sign Git commits. Includes installation and pairing guidance.",
     "developerName": "Agentknock",
     "category": "Developer Tools",
     "capabilities": [],
