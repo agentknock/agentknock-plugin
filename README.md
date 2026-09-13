@@ -20,6 +20,8 @@ itself is independent of those hosts.
 The skill and plugins contain instructions. Install the CLI separately, either
 yourself or with your agent's help.
 
+> Early release · [Share feedback](mailto:agentknock@fulldisclosure.fi)
+
 ## Install the skill
 
 Use your host's skill installer, or copy the complete
