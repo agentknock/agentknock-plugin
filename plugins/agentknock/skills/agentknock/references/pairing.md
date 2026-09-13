@@ -1,65 +1,33 @@
 # Pair Agentknock with the user's phone
 
-Read this for first-time pairing or a pairing error. Use the executable and
-state directory resolved through the main skill's installation lookup for
-every command here. Establish durable storage through
-[installation.md](installation.md) before creating a pairing. A pairing can be
-reused across projects that use the same installation settings; it is not a
-per-repository setup.
+Establish or recover a verified pairing for the installation selected by the main
+skill. A pairing belongs to its state directory, not a project. Reuse an existing
+working pairing.
 
-## Check existing state
+Use `agentknock pairing --help`, subcommand help, and CLI feedback for the pairing
+flow, status, and recovery commands.
 
-Run `agentknock pairing status` in the environment that will run commands.
-This reads local state without contacting the phone. An active status does
-not prove the phone is reachable or still accepts the pairing.
+If the user lacks the mobile app, direct them to the
+[official mobile installation instructions](https://github.com/agentknock/agentknock-cli#install-the-agentknock-mobile-app)
+for their platform before continuing. Ask for the pairing address from their app
+when needed.
 
-- **Active:** Continue with the task. A connection failure alone is not a
-  reason to remove the pairing.
-- **Pending:** Resume the existing verification conversation if its code and
-  the user's approval are known. Do not create another request automatically.
-- **Not paired:** Start the flow below.
+Pairing normally takes two conversational turns:
 
-Use `agentknock pairing --help` and the relevant subcommand's `--help` for
-syntax and recovery operations.
+1. Start pairing through the CLI and show the complete 12-digit verification code,
+   preserving leading zeros. Ask the user to compare it with their phone, approve
+   only if it matches, and reply so you can finish. End the turn here.
+2. After the user confirms the match and phone approval, finish pairing through
+   the CLI and report the result.
 
-## Establish a pairing
+For an interrupted pairing, consult status and resume only when the verification
+code and any required user confirmation are known. Otherwise, arrange a verified
+restart with the user. Diagnose connectivity failures before replacing an active
+pairing. Use CLI diagnostics rather than reading pairing credentials into the
+conversation.
 
-The user needs the Agentknock mobile app; refer them to
-[Agentknock](https://agentknock.dev/) for current availability and installation.
-Ask for the pairing address from their app if it is not already provided.
-It is an address, not a password or a secret value. Do not invent an address
-or use one from an example.
-
-1. Run `agentknock pairing start ADDRESS` with the actual address. Keep the
-   command's session alive while it contacts the phone.
-2. Show the user the complete 12-digit verification code returned by the CLI,
-   preserving leading zeros. Ask them to compare all digits with the phone
-   and approve there only if they match. Do not claim to have verified what
-   the user sees on their phone.
-3. After the user confirms the match and phone approval, run
-   `agentknock pairing finish`. Starting successfully or merely seeing a
-   pending status is not evidence of that approval.
-4. On successful completion, return to the original task. If secret names
-   are unknown, `agentknock secret list` can discover them and exercise the
-   connection without requesting secret values.
-
-If the code does not match, have the user reject the request and run
-`agentknock pairing abort`. If resuming a pending pairing without the original
-verification code, explain that verification cannot be completed from status
-alone and arrange to abort and restart it with the user.
-
-## Recovery
-
-Follow the CLI's error guidance. Check the execution environment and phone
-connectivity before replacing a pairing. The selected state directory
-contains credentials: use CLI status and error messages for diagnosis rather
-than printing that state into the conversation. Preserve the selected
-directory and the required private file permissions.
-
-After an interrupted pairing operation, check status before deciding whether
-to resume or restart. Use removal only when the user intends to disconnect or
-replace the pairing. `pairing remove --force` removes only local state; the
-phone retains its record.
-
-Pairing does not create secrets. For adding or migrating them, read
-[migration.md](migration.md).
+Normally the phone already holds the user's secrets; pairing a new client needs
+no secret setup. For a new user, explain how to add secrets in the phone app.
+If context suggests the user's credentials are stored on this machine—for example,
+because it is their development laptop—propose migrating them to the phone. For that workflow,
+read [migration.md](migration.md).

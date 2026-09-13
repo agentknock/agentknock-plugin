@@ -1,11 +1,11 @@
 # Upload or migrate secrets to the phone
 
-Read this when the user wants to add a secret or migrate existing credentials
-into Agentknock. Use the executable and state directory resolved through the
+Read this when the user wants to upload local secret data or migrate existing
+credentials to the phone. Use the executable and state directory resolved through the
 main skill's installation lookup. If pairing is needed, follow
 [pairing.md](pairing.md) first.
 
-Secrets can be created in the mobile app. For local sources, use
+New secrets are normally created in the mobile app. For local sources, use
 `agentknock secret upload --help` to select an input method that lets the CLI
 read the value directly. Do not print a credential, read it into the conversation,
 or put its literal value in command arguments to construct the upload.

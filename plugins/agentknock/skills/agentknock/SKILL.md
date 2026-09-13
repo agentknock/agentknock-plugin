@@ -12,18 +12,21 @@ into the conversation.
 
 ## Find this environment's installation
 
-Before choosing an executable or pairing directory on first use in a session,
-look for an `agentknock-local` personal skill in the host's skill catalogue.
-If discovery requires searching supported skill locations, do that lookup once
-per session. Also consult any installation settings supplied through the host's
-documented configuration mechanism. Do this before trying defaults: they could
-successfully select a different installation or pairing.
+If you remember a working installation for the current environment, reuse it.
+Otherwise, resolve and verify it:
 
-Apply a record only in the environment it identifies. If applicable settings
-are stale, ambiguous, or conflicting, resolve them rather than silently using
-another installation. With no applicable record or configuration, use the
-ordinary executable and state discovery. Reuse the resolved settings for the
-session unless the environment or setup changes.
+1. Consult the host's installation settings and look for an `agentknock-local`
+   personal skill through its catalogue or supported skill locations. Apply only
+   records matching this environment; resolve stale or conflicting settings.
+   Try defaults only when no applicable configuration exists: they could select
+   a different installation or pairing.
+2. Check the resolved executable's `--version` and `pairing status` using the
+   intended state directory. Follow the references below for installation or
+   pairing problems.
+
+Remember the working invocation. Rereading this skill does not require repeating
+these checks; revisit them when the environment or setup changes, or an error
+calls the installation into question.
 
 Commands below use `agentknock` as shorthand for that resolved invocation,
 including its executable path and any state-directory option or environment
@@ -40,8 +43,6 @@ settings. Apply it consistently to help, pairing, listing, uploads, and runs.
 - For command syntax and options, use the installed CLI's `--help`, usually
   `agentknock run --help`. Consult other subcommands' help when needed. The
   CLI is evolving; use its help rather than guessing flags.
-
-An already working installation and pairing need no repeated setup checks.
 
 ## Choose the secret and command
 
