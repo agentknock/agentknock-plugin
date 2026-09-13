@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/agentknock/agentknock-plugin/security/policy
+    about: Follow the security policy to report a vulnerability privately.
+  - name: Report an Agentknock CLI problem
+    url: https://github.com/agentknock/agentknock-cli/issues/new/choose
+    about: Report problems with the CLI itself in its repository.

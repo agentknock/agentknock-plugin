@@ -1,0 +1,84 @@
+name: Report a bug
+description: Report incorrect behavior in the Agentknock skill, plugins, or marketplaces.
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search existing issues before submitting a report. Don't include secret values, pairing data, authentication tokens, or other sensitive information.
+
+        For security vulnerabilities, follow the [security policy](https://github.com/agentknock/agentknock-plugin/security/policy) instead of opening a public issue.
+
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What happened?
+      description: Describe the incorrect behavior and its effect.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      description: Describe the behavior that you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: How can we reproduce the problem?
+      description: Include the prompt, relevant agent actions, and whether this was a fresh session. Replace sensitive values with clear placeholders.
+    validations:
+      required: true
+
+  - type: input
+    id: agent
+    attributes:
+      label: Agent host and model
+      description: Include the host application and its version, and the model when known.
+      placeholder: Codex CLI, Claude Code, or ChatGPT Work
+    validations:
+      required: true
+
+  - type: input
+    id: platform
+    attributes:
+      label: Execution environment
+      description: Where did the commands run? Include the operating system and architecture when known.
+      placeholder: macOS laptop, Linux development machine, or hosted VM
+    validations:
+      required: true
+
+  - type: input
+    id: installation
+    attributes:
+      label: Plugin or skill installation
+      description: How did you install it? Include its Git commit or installation/update date when known.
+    validations:
+      required: true
+
+  - type: input
+    id: cli_version
+    attributes:
+      label: Agentknock CLI version
+      description: Include the output of `agentknock --version` if the CLI is installed.
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Relevant output
+      description: Include relevant conversation excerpts, command output, or errors after removing sensitive information.
+      render: text
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched the existing issues.
+          required: true
+        - label: I removed secrets and other sensitive information from this report.
+          required: true

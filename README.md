@@ -19,3 +19,25 @@ The repository provides a marketplace catalog for each platform:
 
 - Codex: `.agents/plugins/marketplace.json`
 - Claude Code: `.claude-plugin/marketplace.json`
+
+## Updates
+
+Every change merged to `master` publishes an update. Installed copies receive
+it when their host next updates or syncs. Git commits identify revisions;
+there are no numbered plugin releases or release artifacts.
+
+The [CI workflow](.github/workflows/ci.yml) checks formatting, Markdown,
+workflow syntax, package structure, skill frontmatter, and local links.
+
+## Contributing
+
+Start with an issue. External pull requests are supporting prototypes or
+reproductions; maintainers write the final changes. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+Report vulnerabilities privately using [SECURITY.md](SECURITY.md).
+
+## License
+
+Agentknock plugin is licensed, at your option, under either the
+[Apache License 2.0](LICENSE-APACHE) or the [MIT License](LICENSE-MIT).

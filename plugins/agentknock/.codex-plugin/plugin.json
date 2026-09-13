@@ -6,6 +6,7 @@
   },
   "homepage": "https://agentknock.dev/",
   "repository": "https://github.com/agentknock/agentknock-plugin",
+  "license": "MIT OR Apache-2.0",
   "skills": "./skills/",
   "interface": {
     "displayName": "Agentknock",
