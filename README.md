@@ -1,17 +1,39 @@
-# Agentknock plugin
+# Agentknock agent skill and plugins
 
-Use phone-approved secrets with Codex and Claude Code.
+Teach your agent to use phone-approved secrets.
 
 [Agentknock](https://agentknock.dev/) lets command-line tools use credentials
 stored on your phone. Environment secrets are delivered to the approved command;
 SSH private keys stay on the phone for authentication and Git signing.
 
-This plugin teaches your agent to install and pair Agentknock, run commands with
-secrets, and migrate existing credentials to your phone. It contains instructions;
-the [Agentknock CLI](https://github.com/agentknock/agentknock-cli) is installed
-separately, either by you or with your agent's help.
+The [Agentknock skill](plugins/agentknock/skills/agentknock/SKILL.md) teaches an
+agent to install and pair Agentknock, run commands with secrets, and migrate
+existing credentials to your phone. Any LLM agent can use these instructions;
+executing commands requires an environment that can run the
+[Agentknock CLI](https://github.com/agentknock/agentknock-cli).
+
+This repository also provides [plugin packaging](plugins/agentknock) with
+OpenAI and Anthropic marketplace catalogs and metadata. The installation examples
+below cover Codex CLI, Claude Code, and workspace-managed ChatGPT Work; the skill
+itself is independent of those hosts.
+
+The skill and plugins contain instructions. Install the CLI separately, either
+yourself or with your agent's help.
+
+## Install the skill
+
+Use your host's skill installer, or copy the complete
+[agentknock skill directory](plugins/agentknock/skills/agentknock) into its
+supported skills location. Keep the `references/` directory alongside `SKILL.md`.
+
+An agent without a skill-loading mechanism can read `SKILL.md` and consult its
+linked references directly. Make those files accessible to the agent and point
+it to the skill when asking it to use Agentknock.
 
 ## Install the plugin
+
+For hosts with OpenAI or Anthropic plugin support, install the packaged skill
+through a marketplace.
 
 ### Codex CLI
 
@@ -57,7 +79,7 @@ You need the Agentknock mobile app to pair a client and use secrets. See the
 [mobile installation instructions](https://github.com/agentknock/agentknock-cli#install-the-agentknock-mobile-app)
 for supported phones and downloads.
 
-After installing the plugin, ask your agent:
+After making the skill available to your agent, ask:
 
 > Set up Agentknock on this machine.
 
@@ -91,9 +113,12 @@ secrets already on their phone after pairing another client.
 
 ## Updates
 
-Every change merged to `master` publishes a plugin update. Installed copies
+Every change merged to `master` publishes a skill and plugin update. Installed copies
 receive it when their host next updates or syncs. Git commits identify revisions;
 there are no numbered plugin releases or release artifacts.
+
+If you installed the skill directly, update it through your host's skill installer
+or replace the complete skill directory with the latest copy from `master`.
 
 For Codex CLI, refresh the marketplace and the installed plugin:
 
@@ -145,5 +170,5 @@ changes to agent behavior also need testing in a fresh session.
 
 ## License
 
-Agentknock plugin is licensed, at your option, under either the
+This repository is licensed, at your option, under either the
 [Apache License 2.0](LICENSE-APACHE) or the [MIT License](LICENSE-MIT).
