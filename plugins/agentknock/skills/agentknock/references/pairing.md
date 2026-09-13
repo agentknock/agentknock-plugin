@@ -1,7 +1,11 @@
 # Pair Agentknock with the user's phone
 
-Read this for first-time pairing or a pairing error. Pairing belongs to the
-local user and is reused across projects; it is not a per-repository setup.
+Read this for first-time pairing or a pairing error. Use the executable and
+state directory resolved through the main skill's installation lookup for
+every command here. Establish durable storage through
+[installation.md](installation.md) before creating a pairing. A pairing can be
+reused across projects that use the same installation settings; it is not a
+per-repository setup.
 
 ## Check existing state
 
@@ -44,23 +48,18 @@ If the code does not match, have the user reject the request and run
 verification code, explain that verification cannot be completed from status
 alone and arrange to abort and restart it with the user.
 
-## Recovery and missing secrets
+## Recovery
 
 Follow the CLI's error guidance. Check the execution environment and phone
-connectivity before replacing a pairing. Pairing state in `~/.agentknock`
+connectivity before replacing a pairing. The selected state directory
 contains credentials: use CLI status and error messages for diagnosis rather
-than printing that state into the conversation. Preserve the paired user's
-home directory and the required private file permissions.
+than printing that state into the conversation. Preserve the selected
+directory and the required private file permissions.
 
 After an interrupted pairing operation, check status before deciding whether
 to resume or restart. Use removal only when the user intends to disconnect or
 replace the pairing. `pairing remove --force` removes only local state; the
 phone retains its record.
 
-Pairing does not create the secrets needed for a task. If one is missing, have
-the user add it in the app. If they want to migrate an existing local secret,
-use `agentknock secret upload --help` to choose an input source that reads it
-directly, without exposing its contents to the agent. Prompt-based input needs
-a terminal the user can actually interact with. An upload is only a proposal:
-it becomes available after the user accepts it in the app. Do not delete its
-local source just because the upload command completed.
+Pairing does not create secrets. For adding or migrating them, read
+[migration.md](migration.md).

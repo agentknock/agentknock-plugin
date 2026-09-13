@@ -1,6 +1,6 @@
 ---
 name: agentknock
-description: Use Agentknock to run commands with phone-approved secrets, authenticate with SSH keys, or sign Git commits. Also use when installing Agentknock or pairing it with the user's phone.
+description: Use Agentknock to run commands with phone-approved secrets, authenticate with SSH keys, or sign Git commits. Also covers installation, pairing, and uploading or migrating secrets to the phone.
 ---
 
 # Agentknock
@@ -10,12 +10,33 @@ Environment secrets go directly to the command; SSH private keys stay on the
 phone. Use it to accomplish the user's task without bringing secret values
 into the conversation.
 
+## Find this environment's installation
+
+Before choosing an executable or pairing directory on first use in a session,
+look for an `agentknock-local` personal skill in the host's skill catalogue.
+If discovery requires searching supported skill locations, do that lookup once
+per session. Also consult any installation settings supplied through the host's
+documented configuration mechanism. Do this before trying defaults: they could
+successfully select a different installation or pairing.
+
+Apply a record only in the environment it identifies. If applicable settings
+are stale, ambiguous, or conflicting, resolve them rather than silently using
+another installation. With no applicable record or configuration, use the
+ordinary executable and state discovery. Reuse the resolved settings for the
+session unless the environment or setup changes.
+
+Commands below use `agentknock` as shorthand for that resolved invocation,
+including its executable path and any state-directory option or environment
+settings. Apply it consistently to help, pairing, listing, uploads, and runs.
+
 ## Read only what you need
 
-- For installation, updates, or a missing executable, read
+- For installation, updates, or unreliable executable or state discovery, read
   [installation.md](references/installation.md).
 - For an absent, pending, or broken pairing, read
   [pairing.md](references/pairing.md).
+- For uploading or migrating secrets to the phone, read
+  [migration.md](references/migration.md).
 - For command syntax and options, use the installed CLI's `--help`, usually
   `agentknock run --help`. Consult other subcommands' help when needed. The
   CLI is evolving; use its help rather than guessing flags.
@@ -34,12 +55,12 @@ to assume exist on the user's phone.
 Wrap the command that needs the secret:
 
 ```sh
-agentknock -s SECRET --reason "Explain the purpose of this command" -- COMMAND ARGUMENTS
+agentknock -s SECRET --reason "Explain why this secret is needed" -- COMMAND ARGUMENTS
 ```
 
-Give a short, specific reason that helps the user recognize the request on
-their phone. Choose the secrets needed for this command. If an environment
-secret contains unrelated variables, use the delivery controls in `run --help`
+Explain the access or signing capability needed from each secret; the command
+already describes the action. Choose the secrets needed for this command.
+If an environment secret contains unrelated variables, use the delivery controls in `run --help`
 to select the needed ones. Renaming and stdin delivery can adapt a stored
 variable to a tool's interface without revealing its value to the agent.
 
@@ -56,12 +77,12 @@ access through the intended operation instead.
 
 ## Execute and wait
 
-Run as the paired user, with access to the real home directory and the network.
-Agentknock stores sensitive pairing state in `~/.agentknock` and may update it
-even during secret use or listing. SSH and Git signing also need local Unix
-sockets. If the agent's execution sandbox blocks these facilities, use its
-normal permission mechanism for the command. Do not change `HOME`, copy pairing
-state, or re-pair merely to work around sandbox restrictions.
+Run with network access and writable access to the selected Agentknock state
+directory, which may be updated even during secret use or listing. SSH and Git
+signing also need local Unix sockets. If the agent's execution sandbox blocks
+these facilities, use its normal permission mechanism for the command.
+Preserve the wrapped command's expected environment; do not redirect `HOME`
+or re-pair merely to work around access restrictions.
 
 Allow time for a person to respond on their phone. A tool call returning a
 running process or session identifier is not a failed command: keep that
