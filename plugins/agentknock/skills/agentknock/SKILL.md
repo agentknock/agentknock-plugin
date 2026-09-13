@@ -1,113 +1,83 @@
 ---
 name: agentknock
-description: Use Agentknock to run commands with phone-approved secrets, authenticate with SSH keys, or sign Git commits. Also covers installation, pairing, and uploading or migrating secrets to the phone.
+description: Run commands with phone-approved secrets, including SSH authentication and Git signing. Use for Agentknock installation, pairing, and credential migration too.
 ---
 
 # Agentknock
 
-Agentknock supplies secrets to a command after approval on the user's phone.
-Environment secrets go directly to the command; SSH private keys stay on the
-phone. Use it to accomplish the user's task without bringing secret values
-into the conversation.
+Agentknock delivers stored environment variables to a command after phone
+approval. SSH private keys stay on the phone, which approves authentication
+and signing.
 
-## Find this environment's installation
+## Choose the path
 
-If you remember a working installation for the current environment, reuse it.
-Otherwise, resolve and verify it:
+Reuse the executable and pairing directory already known to work here. Otherwise:
 
-1. Consult the host's installation settings and look for an `agentknock-local`
-   personal skill through its catalogue or supported skill locations. Apply only
-   records matching this environment; resolve stale or conflicting settings.
-   Try defaults only when no applicable configuration exists: they could select
-   a different installation or pairing.
-2. Check the resolved executable's `--version` and `pairing status` using the
-   intended state directory. Follow the references below for installation or
-   pairing problems.
+1. Consult host installation settings and the `agentknock-local` skill, if present,
+   before choosing an installation.
+2. Once the executable is available, check its `--version` and `pairing status`
+   for facts not already established.
 
-Remember the working invocation. Rereading this skill does not require repeating
-these checks; revisit them when the environment or setup changes, or an error
-calls the installation into question.
+Remember the results and invocation. Recheck only when the setup or environment
+changes, or a relevant failure occurs; rereading this skill requires no checks.
 
-Commands below use `agentknock` as shorthand for that resolved invocation,
-including its executable path and any state-directory option or environment
-settings. Apply it consistently to help, pairing, listing, uploads, and runs.
+Read the reference for the requested task or missing prerequisite:
 
-## Read only what you need
-
-- For installation, updates, or unreliable executable or state discovery, read
+- **Install, update, or fix executable/state discovery:**
   [installation.md](references/installation.md).
-- For an absent, pending, or broken pairing, read
-  [pairing.md](references/pairing.md).
-- For uploading or migrating secrets to the phone, read
-  [migration.md](references/migration.md).
-- For command syntax and options, use the installed CLI's `--help`, usually
-  `agentknock run --help`. Consult other subcommands' help when needed. The
-  CLI is evolving; use its help rather than guessing flags.
+- **Establish or recover a pairing:** [pairing.md](references/pairing.md).
+- **Upload credentials or migrate local usage:** [migration.md](references/migration.md).
 
-## Choose the secret and command
+Below, `agentknock` means the resolved executable with its state-directory settings.
+Use that invocation for every operation.
 
-Use secret names supplied by the user or already established in this session.
-When the names or their contents are unknown, run `agentknock secret list`.
-It contacts the phone and returns JSON metadata: names, descriptions, variable
-names, and SSH public keys, never secret values. Reuse that information until
-there is a reason to refresh it. Example names in documentation are not names
-to assume exist on the user's phone.
+## When a command needs secrets
 
-Wrap the command that needs the secret:
+Scope secret use to one executable invocation and its descendants. Make it clear
+from the command line and any script supplied for review how secrets reach the
+intended tools without being disclosed or persisted, including through shells
+and pipelines. Use recognizable tools; avoid opaque wrappers that hide secret
+handling from the approver.
+
+Agentknock includes source for directly executed shebang scripts up to 16 KiB;
+it does not follow script dependencies or capture scripts passed to interpreters.
+This review helps catch handling mistakes; Agentknock is not a sandbox. Verify
+access through the intended operation.
+
+Use known secret names. If names or contents are unknown, `agentknock secret list`
+returns JSON metadata from the phone: names, descriptions, variable names, and SSH
+public keys, without secret values. Reuse the metadata while it remains relevant.
 
 ```sh
-agentknock -s SECRET --reason "Explain why this secret is needed" -- COMMAND ARGUMENTS
+agentknock -s SECRET --reason "Why this secret's access or signing capability is needed" -- COMMAND ARGUMENTS
 ```
 
-Explain the access or signing capability needed from each secret; the command
-already describes the action. Choose the secrets needed for this command.
-If an environment secret contains unrelated variables, use the delivery controls in `run --help`
-to select the needed ones. Renaming and stdin delivery can adapt a stored
-variable to a tool's interface without revealing its value to the agent.
+Repeat `-s SECRET` for multiple secrets. Explain the access or signing capability
+needed from each; the command already describes the action. Ordinary use needs
+no help lookup.
 
-Agentknock launches an executable, not an implicit shell. Prefer wrapping the
-tool directly. Shell aliases and functions are not executables; shell operators
-outside the wrapped command do not extend its secret-bearing environment.
-When a script or explicit shell is needed, keep its work within the requested
-task and quote it so expansion happens in the intended process.
+Wrap the executable directly; Agentknock does not interpret shell syntax. For
+SSH or Git, wrap the usual `ssh` or `git` command. Git must already request SSH
+signing; Agentknock does not enable it. Explicit Git signing-key or SSH-agent
+settings can select another key or agent.
 
-Agentknock is not a sandbox: the command and its descendants can disclose the
-values they receive. Do not retrieve credentials with `env`, `printenv`, shell
-tracing, or an echo command, or write them into agent configuration. Verify
-access through the intended operation instead.
+Use `agentknock run --help` when variable selection, renaming, stdin delivery,
+SSH controls, or an error requires more detail. Keep the wrapped command's
+`HOME` and configuration intact.
 
 ## Execute and wait
 
-Run with network access and writable access to the selected Agentknock state
-directory, which may be updated even during secret use or listing. SSH and Git
-signing also need local Unix sockets. If the agent's execution sandbox blocks
-these facilities, use its normal permission mechanism for the command.
-Preserve the wrapped command's expected environment; do not redirect `HOME`
-or re-pair merely to work around access restrictions.
+Agentknock needs network access and writable pairing storage; SSH and Git signing
+also need local Unix sockets. Use the host's permission mechanism when its
+sandbox blocks these facilities.
 
-Allow time for a person to respond on their phone. A tool call returning a
-running process or session identifier is not a failed command: keep that
-session and wait for its completion. Tell the user when phone interaction is
-needed, and continue independent work while waiting when possible. Do not
-start duplicate requests or impose a short command timeout on an approval wait.
+Approval may be automatic; the phone notifies the user when action is needed.
+You may report that the command is waiting for approval. Keep the original tool
+session alive until the command finishes, allowing time for a person to respond.
+A running session is not a failure: wait rather than issuing duplicate requests
+or applying a short timeout. SSH authentication and Git signing may require
+further approvals.
 
-The phone can ask separately for SSH authentication or a Git signature after
-the command has started. Keep waiting on the original command through these
-requests. Completion of the initial approval does not mean the task succeeded.
-
-On a denial, report it and stop that attempt. On another failure, distinguish
-an Agentknock request failure from an error in the launched command. If the
-command started, check what it actually did before retrying a mutation.
-
-## SSH and Git signing
-
-Wrap the usual SSH or Git command with the selected SSH secret. Agentknock can
-offer the key and obtain signatures, but it does not configure remote account
-access or SSH host trust.
-
-For Git signing, preserve the repository's signing choices. Agentknock does
-not enable signing or change `gpg.format`; Git must already request SSH signing
-or be instructed to do so for that command. An explicit `user.signingKey` or
-SSH `IdentityAgent` setting can select a different key or agent. Inspect these
-settings when the expected phone request does not appear, rather than assuming
-the pairing failed. Use `run --help` for the available SSH and signing controls.
+Report and stop on denial. For other failures, distinguish an Agentknock error
+from an error in the launched command. Check any effects before retrying a command
+that may have changed state.

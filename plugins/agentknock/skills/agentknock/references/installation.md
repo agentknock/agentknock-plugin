@@ -37,16 +37,20 @@ Configure executable and state discovery through mechanisms future agent session
 actually load. Shell startup edits help only if the host reads them.
 
 If configuration alone is insufficient, save a small personal `agentknock-local`
-skill through the host's supported persistent skill mechanism. Record:
+skill through the host's supported persistent skill mechanism. Give it this
+description: "Local Agentknock installation settings. Read before using Agentknock,
+alongside the upstream agentknock skill."
 
-- The environment where it applies.
+Record:
+
 - Executable location, installation method, and required runtime.
 - Pairing-directory location and exact invocation settings.
 - Established persistence boundaries and remaining limitations.
+- A brief environment note to help recognize a mismatch if the skill is moved.
 
-Keep usage instructions in the upstream skill; preserve records for other
-environments. Pairing credentials belong only in Agentknock's state storage;
-plugin caches are replaceable, so keep customization elsewhere.
+Keep usage instructions in the upstream skill. Pairing credentials belong only in
+Agentknock's state storage; plugin caches are replaceable, so keep customization
+elsewhere.
 
 As a last resort, if no supported mechanism can persist and expose the installation
 settings to future sessions, ask the user to add them to their global agent

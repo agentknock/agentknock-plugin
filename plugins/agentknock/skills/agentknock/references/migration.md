@@ -1,34 +1,29 @@
 # Upload or migrate secrets to the phone
 
-Read this when the user wants to upload local secret data or migrate existing
-credentials to the phone. Use the executable and state directory resolved through the
-main skill's installation lookup. If pairing is needed, follow
-[pairing.md](pairing.md) first.
+Transfer the user's selected credentials to their phone using a method that
+clearly avoids printing secret values or saving additional copies along the way.
+New secrets are normally created in the mobile app.
 
-New secrets are normally created in the mobile app. For local sources, use
-`agentknock secret upload --help` to select an input method that lets the CLI
-read the value directly. Do not print a credential, read it into the conversation,
-or put its literal value in command arguments to construct the upload.
+Use `agentknock secret upload --help` for transfer methods and the effects of
+creating, updating, or replacing a secret. Choose the mode that matches the user's
+intent and use metadata to identify existing secrets.
 
-Choose the source that already holds the data: process environment, a dotenv
-file, a value file, or an OpenSSH private-key file. Prompt-based input requires
-a terminal the user can actually interact with; an agent-only terminal does
-not make a secret-entry prompt usable. Encrypted SSH keys also require a
-passphrase source. Consult help for source combinations and format requirements
-rather than transforming or decrypting key material through the conversation.
+The CLI finishes when the phone receives the upload. Ask the user to review and
+accept it in the app; the secret becomes usable only after acceptance. The CLI
+does not wait for this decision. The user can rename a new secret when accepting
+it, so check metadata for its final name when needed.
 
-Match the upload mode to the user's intent. Creating a secret, updating selected
-values, and replacing an entire secret have different effects. In particular,
-replacement removes omitted content when accepted. Confirm the existing secret's
-identity from metadata when necessary; do not infer it from an example name.
+Even if an upload fails or is interrupted, the phone may still receive it. Check
+with the user before retrying to avoid duplicate uploads.
 
-Keep the upload session alive while it waits for the device. Successful upload
-means the phone received the proposal, not that the secret is ready to use.
-The user must review and accept it in the app. A newly created secret may be
-renamed during acceptance, so discover its accepted name if needed.
+## Switch existing tools to Agentknock
 
-After acceptance, verify metadata and exercise the intended operation through
-Agentknock without exposing the value. Removing local credentials is a separate
-migration step: check that the replacement works and that the user intends the
-cleanup before deleting source files or changing other tools' configuration.
-An upload by itself neither deletes local copies nor migrates their consumers.
+Propose temporarily disabling access to the local credential, for example by
+removing its key from the SSH agent or setting its file permissions to `000`.
+Keep enough information to restore the previous setup. Test the intended tools
+through Agentknock with local fallback disabled to establish that they use the
+phone's secret. Restore local access if the migration fails.
+
+Delete the original credentials only after Agentknock is established as the
+primary source, the user wants the local copies removed, and any required
+backups have been made.
