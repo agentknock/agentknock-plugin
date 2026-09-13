@@ -14,8 +14,6 @@
     "developerName": "Agentknock",
     "category": "Developer Tools",
     "capabilities": [],
-    "defaultPrompt": [
-      "Use Agentknock for this task."
-    ]
+    "defaultPrompt": ["Use Agentknock for this task."]
   }
 }

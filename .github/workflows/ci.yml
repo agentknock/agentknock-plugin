@@ -1,0 +1,137 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Install check tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/ci-tools" --ignore-scripts --no-audit --no-fund \
+            prettier@3.9.6 markdownlint-cli2@0.23.2
+          echo "$RUNNER_TEMP/ci-tools/node_modules/.bin" >> "$GITHUB_PATH"
+          python3 -m venv "$RUNNER_TEMP/ci-python"
+          "$RUNNER_TEMP/ci-python/bin/pip" install PyYAML==6.0.3 markdown-it-py==4.2.0
+          echo "$RUNNER_TEMP/ci-python/bin" >> "$GITHUB_PATH"
+          curl --fail --silent --show-error --location \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz \
+            --output "$RUNNER_TEMP/actionlint.tar.gz"
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $RUNNER_TEMP/actionlint.tar.gz" \
+            | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/actionlint"
+          tar --extract --gzip --file "$RUNNER_TEMP/actionlint.tar.gz" \
+            --directory "$RUNNER_TEMP/actionlint" actionlint
+          echo "$RUNNER_TEMP/actionlint" >> "$GITHUB_PATH"
+
+      - name: Check formatting
+        # Run the same command with --write instead of --check to apply fixes.
+        run: prettier --check .
+
+      - name: Lint Markdown
+        # Long prose and command lines are intentional in the skill.
+        run: |
+          echo '{"config":{"MD013":false}}' > "$RUNNER_TEMP/markdownlint.json"
+          markdownlint-cli2 --config "$RUNNER_TEMP/markdownlint.json" '**/*.md'
+
+      - name: Lint GitHub Actions
+        run: actionlint
+
+      - name: Check package structure and local links
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+          from urllib.parse import unquote, urlsplit
+
+          import yaml
+          from markdown_it import MarkdownIt
+
+          root = Path.cwd().resolve()
+
+          def resolve(base, value):
+              path = (base / value).resolve()
+              assert path.is_relative_to(root), f"Path escapes repository: {value}"
+              assert path.exists(), f"Missing path: {path.relative_to(root)}"
+              return path
+
+          catalogs = [
+              (".agents/plugins/marketplace.json", ".codex-plugin"),
+              (".claude-plugin/marketplace.json", ".claude-plugin"),
+          ]
+          skill_roots = set()
+          plugin_names = []
+          for catalog_path, manifest_dir in catalogs:
+              catalog = json.loads(Path(catalog_path).read_text())
+              names = []
+              for entry in catalog["plugins"]:
+                  source = entry["source"]
+                  if isinstance(source, dict):
+                      assert source["source"] == "local", f"Expected local source: {entry['name']}"
+                      source = source["path"]
+                  plugin = resolve(root, source)
+                  manifest_path = resolve(plugin, f"{manifest_dir}/plugin.json")
+                  manifest = json.loads(manifest_path.read_text())
+                  assert manifest["name"] == entry["name"], f"Plugin name mismatch: {manifest_path}"
+                  # Updates follow master; a fixed version can prevent refreshes.
+                  assert "version" not in manifest and "version" not in entry, manifest_path
+                  skills = resolve(plugin, manifest["skills"])
+                  assert skills.is_dir(), f"Not a skills directory: {skills}"
+                  skill_roots.add(skills)
+                  names.append(entry["name"])
+              assert names and len(names) == len(set(names)), f"Empty or duplicate entries: {catalog_path}"
+              plugin_names.append(set(names))
+          assert plugin_names[0] == plugin_names[1], "Marketplaces list different plugins"
+
+          for skills in sorted(skill_roots):
+              entries = list(skills.glob("*/SKILL.md"))
+              assert entries, f"No skills found: {skills}"
+              for skill in entries:
+                  text = skill.read_text()
+                  frontmatter = re.match(r"\A---\n(.*?)\n---(?:\n|$)", text, re.S)
+                  assert frontmatter, f"Missing frontmatter: {skill}"
+                  metadata = yaml.safe_load(frontmatter[1])
+                  name = metadata["name"]
+                  assert re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name), skill
+                  assert len(name) <= 64 and name == skill.parent.name, skill
+                  description = metadata["description"]
+                  assert isinstance(description, str) and 0 < len(description.strip()) <= 1024, skill
+                  assert text[frontmatter.end():].strip(), f"Empty skill: {skill}"
+
+          markdown = MarkdownIt()
+          for document in root.rglob("*.md"):
+              for token in markdown.parse(document.read_text()):
+                  for child in token.children or []:
+                      target = child.attrGet("href") if child.type == "link_open" else child.attrGet("src")
+                      if not target:
+                          continue
+                      url = urlsplit(target)
+                      if not url.scheme and not url.netloc and url.path:
+                          resolve(document.parent, unquote(url.path))
+          print("Package structure, skill frontmatter, and local links are valid.")
+          PY
