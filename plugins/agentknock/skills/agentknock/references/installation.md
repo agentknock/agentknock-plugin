@@ -45,16 +45,16 @@ skill through the host's supported persistent skill mechanism. Give it this
 description: "Local Agentknock installation settings. Read before using Agentknock,
 alongside the upstream agentknock skill."
 
-Record:
+Keep it minimal: include only the facts and customizations needed to use this
+installation, without setup history or duplicated upstream guidance:
 
 - Executable location, installation method, and required runtime.
 - Pairing-directory location and exact invocation settings.
 - Established persistence boundaries and remaining limitations.
 - A brief environment note to help recognize a mismatch if the skill is moved.
 
-Keep usage instructions in the upstream skill. Pairing credentials belong only in
-Agentknock's state storage; plugin caches are replaceable, so keep customization
-elsewhere.
+Pairing credentials belong only in Agentknock's state storage; plugin caches are
+replaceable, so keep customization elsewhere.
 
 As a last resort, if no supported mechanism can persist and expose the installation
 settings to future sessions, ask the user to add them to their global agent
