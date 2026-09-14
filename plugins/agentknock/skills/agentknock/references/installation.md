@@ -3,6 +3,10 @@
 Set up Agentknock so a fresh agent session finds a suitable executable and reuses
 its pairing without conversation memory, reinstallation, or re-pairing.
 
+Installation is complete only when executable storage, pairing storage, and their
+discovery are durable. Continue until this is achieved; if it cannot be achieved,
+report setup as incomplete and explain what cannot persist and why.
+
 Reuse a suitable installation. Otherwise, select a current release compatible
 with the system and task from the [official installation documentation](https://github.com/agentknock/agentknock-cli#install-the-agentknock-client),
 respecting the user's version constraints.
