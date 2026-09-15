@@ -15,6 +15,8 @@
     "developerName": "Agentknock",
     "category": "Developer Tools",
     "capabilities": [],
-    "defaultPrompt": ["Use Agentknock for this task."]
+    "defaultPrompt": ["Use Agentknock for this task."],
+    "composerIcon": "./skills/agentknock/assets/icon.png",
+    "logo": "./skills/agentknock/assets/icon.png"
   }
 }
