@@ -1,0 +1,5 @@
+interface:
+  display_name: "Agentknock"
+  short_description: "Run commands with phone-approved secrets"
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
