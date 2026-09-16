@@ -83,6 +83,7 @@ jobs:
           catalogs = [
               (".agents/plugins/marketplace.json", ".codex-plugin"),
               (".claude-plugin/marketplace.json", ".claude-plugin"),
+              (".cursor-plugin/marketplace.json", ".cursor-plugin"),
           ]
           skill_roots = set()
           plugin_names = []
@@ -106,7 +107,7 @@ jobs:
                   names.append(entry["name"])
               assert names and len(names) == len(set(names)), f"Empty or duplicate entries: {catalog_path}"
               plugin_names.append(set(names))
-          assert plugin_names[0] == plugin_names[1], "Marketplaces list different plugins"
+          assert all(names == plugin_names[0] for names in plugin_names), "Marketplaces list different plugins"
 
           for skills in sorted(skill_roots):
               entries = list(skills.glob("*/SKILL.md"))

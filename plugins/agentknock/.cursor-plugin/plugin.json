@@ -1,0 +1,13 @@
+{
+  "name": "agentknock",
+  "description": "Install and pair Agentknock, then run commands with phone-approved secrets.",
+  "author": {
+    "name": "Agentknock"
+  },
+  "homepage": "https://agentknock.dev/",
+  "repository": "https://github.com/agentknock/agentknock-plugin",
+  "license": "MIT OR Apache-2.0",
+  "keywords": ["secrets", "ssh", "git-signing", "agentknock", "grok-bot"],
+  "logo": "skills/agentknock/assets/icon.png",
+  "skills": "./skills/"
+}
