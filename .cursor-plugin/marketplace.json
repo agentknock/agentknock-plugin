@@ -4,7 +4,7 @@
     "name": "Agentknock"
   },
   "metadata": {
-    "description": "Agentknock CLI skills for Cursor and Grok Bot"
+    "description": "Agentknock CLI skills for Grok Bot"
   },
   "plugins": [
     {

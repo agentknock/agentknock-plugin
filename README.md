@@ -13,9 +13,9 @@ executing commands requires an environment that can run the
 [Agentknock CLI](https://github.com/agentknock/agentknock-cli).
 
 This repository also provides [plugin packaging](plugins/agentknock) with
-OpenAI, Anthropic, and Cursor marketplace catalogs and metadata. The installation
+OpenAI, Anthropic, and Grok Bot marketplace catalogs and metadata. The installation
 examples below cover Codex CLI, Claude Code, workspace-managed ChatGPT Work, and
-Cursor / Grok Bot; the skill itself is independent of those hosts.
+Grok Bot; the skill itself is independent of those hosts.
 
 The skill and plugins contain instructions. Install the CLI separately, either
 yourself or with your agent's help.
@@ -34,24 +34,25 @@ it to the skill when asking it to use Agentknock.
 
 ## Install the plugin
 
-For hosts with OpenAI, Anthropic, or Cursor plugin support, install the packaged
+For hosts with OpenAI, Anthropic, or Grok Bot plugin support, install the packaged
 skill through a marketplace.
 
-### Cursor and Grok Bot
+### Grok Bot
 
-Cursor and Grok Bot install plugins from the [Cursor Marketplace](https://cursor.com/marketplace).
-This repository includes Cursor packaging under `.cursor-plugin/` and
-`plugins/agentknock/.cursor-plugin/`.
+Grok Bot installs plugins from the [plugin marketplace](https://cursor.com/marketplace)
+(SpaceXAI / formerly Cursor). This repository includes Grok Bot packaging under
+`.cursor-plugin/` and `plugins/agentknock/.cursor-plugin/` (directory names match
+the current marketplace layout).
 
 Until Agentknock is listed in the public marketplace:
 
 1. Submit this repository at [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish)
-   (or ask the Cursor team to list it), **or**
-2. For local testing in Cursor, copy or symlink `plugins/agentknock` to
-   `~/.cursor/plugins/local/agentknock` and reload Cursor.
+   (or ask the SpaceXAI / Grok Bot team to list it), **or**
+2. For local testing with Grok Bot / the desktop agent host, copy or symlink
+   `plugins/agentknock` to `~/.cursor/plugins/local/agentknock` and reload the app.
 
-After the plugin is listed, install **Agentknock** from the Cursor Marketplace
-in Cursor or Grok Bot. The skill becomes available to the agent automatically.
+After the plugin is listed, install **Agentknock** from the marketplace in Grok
+Bot. The skill becomes available to the agent automatically.
 
 ### Codex CLI
 
@@ -158,7 +159,7 @@ have it disabled by default. See the
 [Claude Code update instructions](https://code.claude.com/docs/en/discover-plugins#configure-auto-updates).
 
 Workspace-managed ChatGPT installations follow the workspace's marketplace sync
-settings. Cursor Marketplace listings refresh when Cursor or Grok Bot syncs the
+settings. Marketplace listings for Grok Bot refresh when the host syncs the
 published plugin. Plugin updates update the instructions; update the Agentknock
 CLI through the method used to install it.
 
