@@ -13,9 +13,9 @@ executing commands requires an environment that can run the
 [Agentknock CLI](https://github.com/agentknock/agentknock-cli).
 
 This repository also provides [plugin packaging](plugins/agentknock) with
-OpenAI and Anthropic marketplace catalogs and metadata. The installation examples
-below cover Codex CLI, Claude Code, and workspace-managed ChatGPT Work; the skill
-itself is independent of those hosts.
+OpenAI, Anthropic, and Grok Bot marketplace catalogs and metadata. The installation
+examples below cover Codex CLI, Claude Code, workspace-managed ChatGPT Work, and
+Grok Bot; the skill itself is independent of those hosts.
 
 The skill and plugins contain instructions. Install the CLI separately, either
 yourself or with your agent's help.
@@ -34,8 +34,25 @@ it to the skill when asking it to use Agentknock.
 
 ## Install the plugin
 
-For hosts with OpenAI or Anthropic plugin support, install the packaged skill
-through a marketplace.
+For hosts with OpenAI, Anthropic, or Grok Bot plugin support, install the packaged
+skill through a marketplace.
+
+### Grok Bot
+
+Grok Bot installs plugins from the [plugin marketplace](https://cursor.com/marketplace)
+(SpaceXAI / formerly Cursor). This repository includes Grok Bot packaging under
+`.cursor-plugin/` and `plugins/agentknock/.cursor-plugin/` (directory names match
+the current marketplace layout).
+
+Until Agentknock is listed in the public marketplace:
+
+1. Submit this repository at [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish)
+   (or ask the SpaceXAI / Grok Bot team to list it), **or**
+2. For local testing with Grok Bot / the desktop agent host, copy or symlink
+   `plugins/agentknock` to `~/.cursor/plugins/local/agentknock` and reload the app.
+
+After the plugin is listed, install **Agentknock** from the marketplace in Grok
+Bot. The skill becomes available to the agent automatically.
 
 ### Codex CLI
 
@@ -142,8 +159,9 @@ have it disabled by default. See the
 [Claude Code update instructions](https://code.claude.com/docs/en/discover-plugins#configure-auto-updates).
 
 Workspace-managed ChatGPT installations follow the workspace's marketplace sync
-settings. Plugin updates update the instructions; update the Agentknock CLI
-through the method used to install it.
+settings. Marketplace listings for Grok Bot refresh when the host syncs the
+published plugin. Plugin updates update the instructions; update the Agentknock
+CLI through the method used to install it.
 
 ## Feedback and contributions
 

@@ -1,0 +1,20 @@
+{
+  "name": "agentknock",
+  "description": "Install and pair Agentknock for Grok Bot, then run commands with phone-approved secrets.",
+  "author": {
+    "name": "Agentknock"
+  },
+  "homepage": "https://agentknock.dev/",
+  "repository": "https://github.com/agentknock/agentknock-plugin",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "grok-bot",
+    "secrets",
+    "ssh",
+    "git-signing",
+    "agentknock",
+    "spacexai"
+  ],
+  "logo": "skills/agentknock/assets/icon.png",
+  "skills": "./skills/"
+}

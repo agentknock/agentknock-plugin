@@ -1,0 +1,16 @@
+{
+  "name": "agentknock",
+  "owner": {
+    "name": "Agentknock"
+  },
+  "metadata": {
+    "description": "Agentknock CLI skills for Grok Bot"
+  },
+  "plugins": [
+    {
+      "name": "agentknock",
+      "source": "./plugins/agentknock",
+      "description": "Install and pair Agentknock, then run commands with phone-approved secrets."
+    }
+  ]
+}
