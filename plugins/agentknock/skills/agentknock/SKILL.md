@@ -54,7 +54,8 @@ agentknock -s SECRET --reason "Why this secret's access or signing capability is
 
 Repeat `-s SECRET` for multiple secrets. Explain the access or signing capability
 needed from each; the command already describes the action. Ordinary use needs
-no help lookup.
+no help lookup. Use all environment variables in a secret by default; reserve
+`--only-env` for a specific need to select a subset.
 
 Wrap the executable directly; Agentknock does not interpret shell syntax. For
 SSH or Git, wrap the usual `ssh` or `git` command. Git must already request SSH
