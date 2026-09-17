@@ -33,14 +33,14 @@ Use that invocation for every operation.
 
 ## When a command needs secrets
 
-Scope secret use to one executable invocation and its descendants. Make it clear
-from the command line and any script supplied for review how secrets reach the
-intended tools without being disclosed or persisted, including through shells
-and pipelines. Use recognizable tools; avoid opaque wrappers that hide secret
-handling from the approver.
+Scope secret use to one executable invocation and its descendants.
 
-Agentknock includes source for directly executed shebang scripts up to 16 KiB;
-it does not follow script dependencies or capture scripts passed to interpreters.
+Make secret handling visible in the review request: the command line and included
+script source must show how secrets reach the intended tools without being
+disclosed or persisted. For custom scripts, use shebangs and execute them directly
+so Agentknock includes their source (up to 16 KiB); scripts passed to interpreters
+and imported dependencies are not included.
+
 This review helps catch handling mistakes; Agentknock is not a sandbox. Verify
 access through the intended operation.
 
