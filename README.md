@@ -39,20 +39,12 @@ skill through a marketplace.
 
 ### Grok Bot
 
-Grok Bot installs plugins from the [plugin marketplace](https://cursor.com/marketplace)
-(SpaceXAI / formerly Cursor). This repository includes Grok Bot packaging under
-`.cursor-plugin/` and `plugins/agentknock/.cursor-plugin/` (directory names match
-the current marketplace layout).
+To install the plugin in Grok Bot:
 
-Until Agentknock is listed in the public marketplace:
-
-1. Submit this repository at [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish)
-   (or ask the SpaceXAI / Grok Bot team to list it), **or**
-2. For local testing with Grok Bot / the desktop agent host, copy or symlink
-   `plugins/agentknock` to `~/.cursor/plugins/local/agentknock` and reload the app.
-
-After the plugin is listed, install **Agentknock** from the marketplace in Grok
-Bot. The skill becomes available to the agent automatically.
+1. Clone or download [this repository](https://github.com/agentknock/agentknock-plugin).
+2. Copy the complete `plugins/agentknock` directory to
+   `~/.cursor/plugins/local/agentknock`.
+3. Reload Grok Bot. The skill becomes available to the agent automatically.
 
 ### Codex CLI
 
