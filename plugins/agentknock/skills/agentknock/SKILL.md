@@ -79,6 +79,10 @@ A running session is not a failure: wait rather than issuing duplicate requests
 or applying a short timeout. SSH authentication and Git signing may require
 further approvals.
 
-Report and stop on denial. For other failures, distinguish an Agentknock error
-from an error in the launched command. Check any effects before retrying a command
-that may have changed state.
+On denial, use any feedback to reconsider the request. If a revised approach
+addresses the reason for denial while respecting the user's intent, submit it for
+review. Do not retry unchanged or bypass the denial; if the reason is unclear or
+cannot be addressed, report it and stop.
+
+For other failures, distinguish an Agentknock error from an error in the launched
+command. Check any effects before retrying a command that may have changed state.
